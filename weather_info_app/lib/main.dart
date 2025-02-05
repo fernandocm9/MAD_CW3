@@ -56,9 +56,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final TextEditingController _cityController = TextEditingController();
+  String city = "";
   int _counter = 0;
   int min = 15;
   int max = 30;
+  int temperature = 0;
+  String weather = "";
   List<String> weatherType = ["Sunny", "Cloudy", "Rainy"];
 
   void _incrementCounter() {
@@ -74,9 +78,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _fetchWeather() {
     setState(() {
-      int temperature = min + Random().nextInt(max - min + 1);
+      city = _cityController.text;
+      temperature = min + Random().nextInt(max - min + 1);
       int randomNumber = Random().nextInt(3);
-      String weather = weatherType[randomNumber];
+      weather = weatherType[randomNumber];
+      print(city);
     });
   }
 
@@ -118,17 +124,20 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             TextField(
+              controller: _cityController,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Enter City Name',
               ),
             ),
-            ElevatedButton(onPressed: () { }, child: Text('Fetch Weather')),
+            ElevatedButton(onPressed: () {
+              _fetchWeather();  
+            }, child: Text('Fetch Weather')),
             Column(
               children: [
-                Text('Temperature: 25°C'),
-                Text('Humidity: 10%'),
-                Text('Wind Speed: 10 km/h'),
+                Text('City Name: $city'),
+                Text('Temperature:  $temperature'),
+                Text('Condition: $weather'),
               ],
             )
           ],
